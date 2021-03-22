@@ -1,0 +1,78 @@
+AZURE-PRACTICE-2
+----------------
+
+TASK:
+1. create 3 machines
+2. ensure all 3 nodes can talk to eachother
+3. install Docker, Kubelet, kubeadm, kubect
+4. initialize & join k8s cluster using kubeadm
+5. install CNI(weave) for cluster DNS and POD commn.
+6. check node and pod status
+
+STEPS:
+1/6
+	1. VM --> ADD
+		a. Resource group: multi_node cluster, 
+		b. VM name:master,
+		c. Authentication type: password
+		username: master
+		pw: Master123456
+	2. Review and create
+
+Create another VM with name worker_01 and worker_02 in same regions(both IP addresses will be same). Review and create 
+
+2/6
+To secure a connection btwn the nodes and master we have to set vnet peering . For that….
+
+	1. Go to master--> networking --> virtual nodes subnet(link)-->peering(left bar)
+	2. Peering link name: k8s_peering
+	Peering link name:master-to-worker
+	Virtual node: multi_nodevnet344(the worker vm)
+	-->add
+      Check peering in virtual networks 
+
+	3. VM --> inbound rules(specifies the incoming traffic) 
+		Destination port ranges: * (to allow all access)   
+		Name:port_all.
+		-->ADD
+		Repeat for nodes as well. Network connectivity completed  
+		
+	4. Master-->overview-->public IP address(copy)
+	5. Paste the ip address in puTTY
+	(commands in putty)
+	$ hostname
+	$ sudo su -   (enters u as root user)
+	Repeat for worker nodes
+	6. To test if all can communicate with eaachother.
+		a. In the master:
+		$ssh master <worker_01 IP address>
+		$hostname
+		$ssh master@<master ip >
+		$sudo su -  switch back to the root user (tip: make sure u are in the root user to get admin access and perform operations)
+	7. To create env variables..
+		a. Type these cmds in all terminals
+		$ apt-get update && apt-get install -y docker.io
+		$ docker --version  to check if docker is properly installed 
+		$ apt-get update && apt-get install -y apt-transport-https  to enable https(communication)
+		$  curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -    install kubeadm kubernetes components
+		$ cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.listdeb https://apt.kubernetes.io/   kubernetes-xenial mainEOF
+		$ apt-get update downloads all the latest versions into ur ubuntu system
+		$ apt-get install -y kubelet kubeadm kubectl  installs all the required software
+		$ echo "Environment="KUBELET_CGROUP_ARGS=--cgroup-driver=cgroupfs"" >> /etc/systemd/system/kubelet.service.d/10-kubeadm.conf      updating config file and setting up the env variable
+		$systemctl daemon-reload   restarting of the kubelet service 
+		$ systemctl restart kubectl  
+		
+		Initialising the master nodes and joining the cluster nodes
+         b.  In the master terminal and worker terminal
+              $kubeadm init  initialising the cluster       
+		At the end of the execution, u will get a join cmd, copy paste for future ref
+		Run the above cmd in worker_01 and  worker_02 to join it with master
+		$ cp /etc/kubernetes/admin.conf $HOME/  copying the admin config file to home directory
+		$chown $(id -u):$(id -g) $HOME/admin.conf  changing the permission of the file to home directory
+		$ export KUBECONFIG=$HOME/admin.conf  copying admin files to kubeconfig var to export
+		$ ls -l
+		$admin.conf
+		$ kubectl get nodes
+		$kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"      install CNI
+		$ kubectl get nodes
+$ kubectl get nodes -n kube-system     to get all the default pods that are running

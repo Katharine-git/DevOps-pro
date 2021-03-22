@@ -1,0 +1,111 @@
+KUBERNETS
+----------
+WHAT IS KUBERNETES?
+
+*open source container orchestration framework
+*developed by Google
+*manages containers
+*helps manage implications that involve 1000s of containers in different
+deployment environments(physical, cloud and hybrid).
+
+PROBLEMS KUBERNETES SOLVE?
+FEATURES THAT ORCHESTRATION TOOLS OFFER
+
+*High availability or no downtime
+*Scalability of high perforance
+*Disaster recovery-backup and restore
+
+K8's COMPONENTS
+----------------
+NOD AND POD
+-----------
+
+POD:smallest unit of K8s
+Abstraction over container.
+POD creates a running env/layer over the container
+
+K8 Kluster
+
+MASTER: head nodes or the control plane
+%Multimaster control H/A (high availability)Plane.
+For high availability, we should add MASTERS based on the env we use.
+number 5 and 6 are sweetspots.
+All MASTERS are available on the k8 control plane
+--------------------------------------------------------------
+KUBE-APISERVER			  
+*front-end to the control planne
+*exposes the API(REST)
+*consumes JSON/YAML
+
+KV(CLUSTER STORE)(imp.)
+------------------------
+*Persists cluster atate and config
+*Based on etcd
+*Performance is critical
+*Have recovery plans in place.
+KUBE-CONTROLLER-MANAGER
+-----------------------
+*Controller of controllers
+	*node controller
+	*deployment controller
+	*endpoints/endpointslice controller...
+*watch loops
+KUBE-SCHEDULER
+---------------
+*Watches API server for new work tasks
+*assigns work to the cluster nodes
+	*Affinity/Anti-affinity
+	*Constraints
+	*Taints
+	*Resorces
+	
+WHAT EXISTS INSIDE THE NODES????
+----------------------------------
+
+Kubelet[K]
+-----------
+*main kubernetes agent
+*registers node with cluster
+*watches api server for work tasks(pods)
+*executes pods
+*reports back to masters
+
+CONTAINERS
+----------
+a plugable runtime interface
+can be Docker
+Pluggable: container runtime interface(CRI)
+
+KUBE-PROXY
+----------
+*network component
+
+VIRTUAL KUBERNETES(NODELESS KUBERNETES)
+----------------------------------------
+2 models
+1.declarative model: declare wat u want in a manifest file(yaml)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

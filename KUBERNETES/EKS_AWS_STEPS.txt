@@ -1,0 +1,74 @@
+1. Create AWS account
+2. Login to console
+3. Create EKS Cluster
+	IAM Roles -> Create Roles -> Aws Service  and 
+	Or select a service to view its use cases -> AKS &
+	Select your use case -> EKS Cluster
+	Next permissions -> tags (skip) -> 
+	review & create role name (eksClusterRole) and "create role"
+   Add the role 
+4. Set up access key
+IAM Role -> Quick Links -> Manage Access Key -> Generate access Key
+
+Access Key ID:
+AKIATTYRX4CDN5JQ2LHB
+Secret Access Key:
+KgL0TOfJsB30ECUeplgUb6BVCo8fjzkItzJ7hA9+
+
+5. Kubectl 
+curl -o kubectl.exe https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.9/2020-11-02/bin/windows/amd64/kubectl.exe
+
+
+6. Check Cluster Status 
+
+aws eks --region [EKS_Region] describe-cluster --name [EKS_Cluster_name] --query cluster.status
+
+aws eks --region us-east-2 describe-cluster --name ustekscluster --query cluster.status
+
+7. Configure kubectl with EKS API server credentials
+
+aws eks --region EKS_Region] update-kubeconfig --name [EKS_Cluster_name]
+
+aws eks --region us-east-2 update-kubeconfig --name ustekscluster
+
+8. Validate Kubectl configuration to master node 
+
+kubectl get svc
+
+9. Create Worker nodes
+
+EKS -> Clusters -> yourcluster
+
+Find Compute tab -> node groups -> Add node group
+	IAM Role -> create role ->
+	AWS Service -> EC2 -> 
+	Next: permissions -> 
+	Select Policies ->
+		AmazonEKS_CNI_Policy
+		AmazonEKSWorkerNodePolicy
+		AmazonEC2ContainerRegistryReadOnly
+	skip tags -> Review and "Create Role"
+
+back to Configure Node Group and follow next steps
+
+Specify networking -> EC2 console -> Create key -pair
+download and keep it key
+
+Select required options , review and create worker node group
+
+
+10. Verity worker node status from kubectl
+
+kubectl get nodes --watch
+
+
+11 ***Delete EKS Cluster to avoid charges
+	Delete Woker Nodes
+	Delete Master Node
+	Delete Key Pair
+	Delete IAM Role
+
+
+
+
+
