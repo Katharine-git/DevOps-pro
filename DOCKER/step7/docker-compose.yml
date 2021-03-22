@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  phpapp:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: phpapp:123
+    ports:
+      - "9292:80"
+    volumes:
+    - "./:/var/www"
+    container_name: my-php-app

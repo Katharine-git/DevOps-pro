@@ -1,0 +1,73 @@
+DOCKER
+-------
+
+DOCKER IN A NUTSHELL
+----------------------
+
+
+WHY DOCKER?
+-------------
+
+Due to the difference in the computing environment between tech and product
+
+
+MICROSERVICES
+--------------
+microservices are small processes that communicates with eachother to achieve a certain goal. 
+that is, when a huge application is divided into small processes to ease development and complexity.
+
+3 MAJOR ADVANTAGES OF USING MICROSERVICE ARCHITECTURE
+----------------------------------------------------------
+
+$ Aplications are easy to build and maintain when they are broken down into smaller processes.
+$ easy to update a particular software 
+$ Even if any of the  modules goes down it wont effect the entire application.
+
+
+Docker File: Developer writes a code that defines a rqmt for an application or its dependancies in an easy to write docker file. The  docker file produces docker images
+
+Docker Image: Whatever dependencies of the app is available in this image
+
+Docker container : is the run time of Docker image
+
+The image is loaded in the docker hub, which is a GIT Repo for Docker images. It containes public aswell as
+private repo. from public repo u can pull/upload ur own images
+From these repo , teams such as production and Q.A will pull them and create their own containers
+
+ADVANTAGE: Watever software dependencies that are rqd for ur software is available throughout thr software
+life-cycle. So u can work the same env throughout the software work cycle.
+BASIC DOCKER COMMANDS
+-----------------------
+
+-->docker run hello-world //runs a basic image called hello-world
+
+-->docker images   //checks the images u hv in ur system
+
+-->docker pull ubuntu //pulls docker image(ubuntu) from docker hub
+
+-->docker run -it -d ubuntu  //runs the ubuntu image as a docker container
+
+-->docker ps -a : Shows all the containers
+
+-->docker exec -it <container id> bash //we're accessing the docker container (here it is ubuntu).
+
+-->docker stop <container id>  //stops the running container.
+
+-->docker commit <container id> katharinechristine/ubuntu  //create a new docker image with  a new id.
+
+-->docker login  :  to login to docker
+
+-->docker push katharinechristine/ubuntu //pushes the image to docker hub
+
+-->docker rm <container id> //deletes the container
+
+-->docker rmi <image id> //deletes the image
+
+--> docker build  -t <imagename>    //builds an image from docker file
+
+SOME ADVANCED DOCKER COMMANDS
+------------------------------
+
+-->docker-compose up      //start the container service
+-->docker-compose build  //cmd used to power multi-container appl where various services will be hosted inside different containers
+                           based on ur yaml file
